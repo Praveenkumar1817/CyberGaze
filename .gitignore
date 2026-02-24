@@ -13,10 +13,10 @@ build/
 .ruff_cache/
 *.so
 
-# Environments
+# Secrets — NEVER commit these
+.env
 .env.local
 .env.*.local
-# (keep .env for reference — values are non-secret for local dev)
 
 # Logs / data files generated at runtime
 ai-service/forensic_logs.csv
@@ -27,7 +27,7 @@ node_modules/
 dashboard/dist/
 dashboard/.vite/
 
-# ── Java / Maven (legacy — no longer used) ─
+# ── Java / Maven (no longer used) ─────────
 core-system/target/
 core-system/*.jar
 *.class

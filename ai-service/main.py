@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_core.documents import Document
-from langchain_community.llms import Ollama
+from langchain_groq import ChatGroq
 from langchain_core.embeddings import Embeddings
 
 # Local modules
@@ -38,8 +38,8 @@ from mining_engine import run_fpgrowth
 # ─────────────────────────────────────────────
 load_dotenv()
 
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_MODEL   = os.getenv("GROQ_MODEL", "llama3-8b-8192")
 LOG_CSV_PATH = os.getenv("LOG_CSV_PATH", "./forensic_logs.csv")
 
 # ─────────────────────────────────────────────
@@ -186,15 +186,17 @@ def _load_and_index(csv_path: str) -> int:
     app_state["vectorstore"] = vectorstore
     app_state["retriever"] = vectorstore.as_retriever(search_kwargs={"k": 5})
 
-    # Build Ollama LLM instance for RAG chat
-    try:
-        llm = Ollama(base_url=OLLAMA_BASE_URL, model=OLLAMA_MODEL)
-        # Quick connectivity test — will raise if Ollama isn't running
-        app_state["llm"] = llm
-        print(f"[CyberGaze] Ollama LLM ready: {OLLAMA_MODEL}")
-    except Exception as e:
-        print(f"[CyberGaze] WARNING: Could not connect to Ollama: {e}")
-        print("[CyberGaze] Chat will use mock responses. Start 'ollama serve' to enable LLM.")
+    # Build Groq LLM instance (Llama 3)
+    if GROQ_API_KEY:
+        try:
+            llm = ChatGroq(api_key=GROQ_API_KEY, model_name=GROQ_MODEL, temperature=0.2)
+            app_state["llm"] = llm
+            print(f"[CyberGaze] Groq LLM ready: {GROQ_MODEL}")
+        except Exception as e:
+            print(f"[CyberGaze] WARNING: Groq init failed: {e}")
+            app_state["llm"] = None
+    else:
+        print("[CyberGaze] No GROQ_API_KEY — chat will use mock responses.")
         app_state["llm"] = None
 
     return len(df)
@@ -255,6 +257,7 @@ async def health_check():
         "service": "CyberGaze AI Service",
         "logs_loaded": app_state["df"] is not None,
         "llm_available": app_state["llm"] is not None,
+        "llm_backend": f"Groq / {GROQ_MODEL}" if app_state["llm"] else "mock",
     }
 
 
@@ -358,25 +361,28 @@ async def chat(request: ChatRequest):
     query = request.query.strip()
     source_events = []
 
-    # Try LLM-based RAG if Ollama is available
+    # Try LLM-based RAG via Groq (Llama 3)
     if app_state["llm"] is not None and app_state["retriever"] is not None:
         try:
             # Step 1: Retrieve relevant log documents from FAISS
             docs = app_state["retriever"].invoke(query)
             source_events = [doc.page_content[:120] for doc in docs[:3]]
 
-            # Step 2: Build context string from retrieved docs
+            # Step 2: Build context from retrieved docs
             context = "\n".join([doc.page_content for doc in docs])
 
-            # Step 3: Build prompt and invoke Ollama
-            prompt = (
-                f"You are a Digital Forensics analyst reviewing security logs. "
-                f"Answer the analyst's question based ONLY on the following log entries.\n\n"
-                f"LOG ENTRIES:\n{context}\n\n"
-                f"ANALYST QUESTION: {query}\n\n"
-                f"FORENSIC ANSWER:"
-            )
-            answer = app_state["llm"].invoke(prompt)
+            # Step 3: Build prompt and invoke Groq Llama 3
+            from langchain_core.messages import HumanMessage, SystemMessage
+            messages = [
+                SystemMessage(content=(
+                    "You are an expert Digital Forensics and Incident Response (DFIR) analyst. "
+                    "Answer questions based ONLY on the provided security log entries. "
+                    "Be concise, precise, and cite specific IPs, timestamps, or event types."
+                )),
+                HumanMessage(content=f"LOG ENTRIES:\n{context}\n\nANALYST QUESTION: {query}"),
+            ]
+            response = app_state["llm"].invoke(messages)
+            answer = response.content if hasattr(response, 'content') else str(response)
 
             return ChatResponse(
                 query=query,
