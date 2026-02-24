@@ -39,7 +39,7 @@ from mining_engine import run_fpgrowth
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL   = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+GROQ_MODEL   = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 LOG_CSV_PATH = os.getenv("LOG_CSV_PATH", "./forensic_logs.csv")
 
 # ─────────────────────────────────────────────

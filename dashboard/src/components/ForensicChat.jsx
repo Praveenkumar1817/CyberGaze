@@ -63,7 +63,7 @@ export default function ForensicChat() {
             <div className="card-header">
                 <Bot size={15} className="text-cyan" />
                 <span className="card-title">AI Forensic Analyst</span>
-                <span className="badge badge-cyan ml-auto">RAG · Ollama llama3</span>
+                <span className="badge badge-cyan ml-auto">RAG · Groq llama3-8b-8192</span>
             </div>
 
             {/* Quick queries */}
