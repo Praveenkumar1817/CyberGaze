@@ -1,0 +1,41 @@
+# ── Python ────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.so
+
+# Environments
+.env.local
+.env.*.local
+# (keep .env for reference — values are non-secret for local dev)
+
+# Logs / data files generated at runtime
+ai-service/forensic_logs.csv
+*.log
+
+# ── Node / React ──────────────────────────
+node_modules/
+dashboard/dist/
+dashboard/.vite/
+
+# ── Java / Maven (legacy — no longer used) ─
+core-system/target/
+core-system/*.jar
+*.class
+
+# ── OS / IDE ──────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
+*.swp
+*~

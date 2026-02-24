@@ -1,0 +1,401 @@
+/* =====================================================
+   CyberGaze — Global Styles & Design Tokens
+   ===================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts are loaded via index.html ── */
+
+/* ── CSS Custom Properties ─────────────────────── */
+:root {
+    /* Core palette */
+    --bg: #06090f;
+    --surface: #0d1421;
+    --card: #111827;
+    --card-hover: #162032;
+    --border: #1e2d45;
+    --border-hl: #2a4065;
+
+    /* Accent palette */
+    --cyan: #22d3ee;
+    --cyan-dim: rgba(34, 211, 238, 0.15);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.15);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251, 191, 36, 0.12);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167, 139, 250, 0.12);
+
+    /* Text */
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+    /* Spacing & radius */
+    --radius: 10px;
+    --radius-sm: 6px;
+}
+
+/* ── Reset & Base ───────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbars ─────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-hl);
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+}
+
+/* ── Layout Components ──────────────────────────── */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s;
+}
+
+.card:hover {
+    border-color: var(--border-hl);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.card-body {
+    padding: 16px 18px;
+}
+
+/* ── Badges ─────────────────────────────────────── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge-cyan {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.badge-green {
+    background: var(--green-dim);
+    color: var(--green);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.badge-red {
+    background: var(--red-dim);
+    color: var(--red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.badge-amber {
+    background: var(--amber-dim);
+    color: var(--amber);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.badge-purple {
+    background: var(--purple-dim);
+    color: var(--purple);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.badge-gray {
+    background: rgba(71, 85, 105, 0.2);
+    color: var(--text-secondary);
+    border: 1px solid #334155;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 7px 14px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-cyan {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.btn-cyan:hover:not(:disabled) {
+    background: rgba(34, 211, 238, 0.25);
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.25);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border-hl);
+}
+
+.btn-danger {
+    background: var(--red-dim);
+    color: var(--red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    font-size: 14px;
+    font-weight: 800;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: rgba(248, 113, 113, 0.28);
+    box-shadow: 0 0 24px rgba(248, 113, 113, 0.35), 0 0 48px rgba(248, 113, 113, 0.15);
+}
+
+.btn-danger.pulsing {
+    box-shadow: 0 0 32px rgba(248, 113, 113, 0.6), 0 0 64px rgba(248, 113, 113, 0.3);
+    animation: danger-pulse 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes danger-pulse {
+    from {
+        box-shadow: 0 0 20px rgba(248, 113, 113, 0.4), 0 0 40px rgba(248, 113, 113, 0.15);
+    }
+
+    to {
+        box-shadow: 0 0 40px rgba(248, 113, 113, 0.7), 0 0 80px rgba(248, 113, 113, 0.35);
+    }
+}
+
+/* ── Form Controls ──────────────────────────────── */
+.input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 9px 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input::placeholder {
+    color: var(--text-muted);
+}
+
+.input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+/* Range input */
+.range-input {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 99px;
+    outline: none;
+    cursor: pointer;
+}
+
+.range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);
+}
+
+/* ── Status dot ─────────────────────────────────── */
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.online {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: blink 2s infinite;
+}
+
+.status-dot.offline {
+    background: var(--red);
+}
+
+.status-dot.checking {
+    background: var(--amber);
+    animation: blink 0.6s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0.4
+    }
+}
+
+/* ── Timeline ───────────────────────────────────── */
+.timeline-line {
+    width: 1px;
+    background: linear-gradient(to bottom, var(--border-hl), transparent);
+    flex-shrink: 0;
+    min-height: 20px;
+    margin: 2px auto;
+}
+
+/* ── Loading dots ───────────────────────────────── */
+.dot-loader span {
+    display: inline-block;
+    animation: blink 1s ease-in-out infinite;
+}
+
+.dot-loader span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot-loader span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* ── Fade-in for playbook steps ─────────────────── */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-slide {
+    animation: fadeSlide 0.3s ease forwards;
+    opacity: 0;
+}
+
+/* ── Misc utility ───────────────────────────────── */
+.mono {
+    font-family: var(--font-mono);
+}
+
+.text-cyan {
+    color: var(--cyan);
+}
+
+.text-green {
+    color: var(--green);
+}
+
+.text-red {
+    color: var(--red);
+}
+
+.text-amber {
+    color: var(--amber);
+}
+
+.text-purple {
+    color: var(--purple);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
